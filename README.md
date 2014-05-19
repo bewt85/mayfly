@@ -6,7 +6,6 @@ working alongside one another before being moved into production.
 
 ## TODO
 
-- Configure the apps to forward x-mayfly header with requests
 - Dockerize the two apps
 - Create a docker container to provide DNS
 - Change the flask apps to use the docker DNS
