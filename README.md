@@ -6,10 +6,6 @@ working alongside one another before being moved into production.
 
 ## TODO
 
-- Dockerize the two apps
-- Create a docker container to provide DNS
-- Change the flask apps to use the docker DNS
-- Configure the host to use the docker DNS
 - Setup a loadbalancer to forward requests to the right container
 - Setup the load balancer to set the x-mayfly header
 - Setup the load balancer to send traffic to the container based on 
@@ -20,3 +16,8 @@ working alongside one another before being moved into production.
 - Something to configure the load balancer
 - Something to launch the right containters
 - Something to retire old containers / environments
+
+# Tools to look at
+- confd + etcd / consul
+- fleet
+- fig
