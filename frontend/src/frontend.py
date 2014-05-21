@@ -9,10 +9,10 @@ app = Flask(__name__)
 def hello_world():
     mayfly_header = flask.request.headers.get('x-mayfly')
     request_headers = {'x-mayfly': mayfly_header} if mayfly_header else {}
-    r = requests.get('http://localhost:5001/', headers=request_headers)
+    r = requests.get('http://frontend.service:5001/', headers=request_headers)
     backend_message = r.json()['message']
     frontend_message = "Hello world from the frontend and %s" % backend_message 
     return frontend_message 
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(host='0.0.0.0', port=8080)
