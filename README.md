@@ -18,6 +18,7 @@ working alongside one another before being moved into production.
 - Something to retire old containers / environments
 
 # Tools to look at
-- confd + etcd / consul
-- fleet
-- fig
+- confd + etcd / consul to create new config
+- fleet to deploy across a couple of machines
+- fig for deploying on one machine if fleet is overkill
+- incron to autoreload when config changes
