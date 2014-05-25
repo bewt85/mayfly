@@ -8,6 +8,8 @@ working alongside one another before being moved into production.
 
 - When a container starts up an ambasador should register it as a new backend
   in HAProxy
+  - New container to register services with etcd
+  - Update configure\_haproxy to use confd
 - Given an environement configuration file:
   - Create frontend configuration for the environement
   - Check that backend config is in place
