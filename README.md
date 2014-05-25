@@ -6,8 +6,6 @@ working alongside one another before being moved into production.
 
 ## TODO
 
-- Create two versions of the frontend and backend 
-  - Create templates so that old and new versions look different
 - Load haproxy.cfg to serve different combinations of the apps
 - When a container starts up an ambasador should register it as a new backend
   in HAProxy
