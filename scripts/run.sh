@@ -16,7 +16,8 @@ docker run -d --name frontend_0.0.1 -t -p 5000:8080 --dns $DNS_IP bewt85/fronten
 docker run -d --name backend_0.0.2  -t -p 6001:8080 --dns $DNS_IP bewt85/backend:0.0.2
 docker run -d --name frontend_0.0.2 -t -p 5001:8080 --dns $DNS_IP bewt85/frontend:0.0.2
 
-docker run -d --name haproxy  -t -p 80:80     --dns $DNS_IP bewt85/haproxy
+docker run -d --name haproxy       -p 80:80                  --dns $DNS_IP bewt85/haproxy
+docker run -d --name etcd-node1 -t -p 7000:7000 -p 9000:9000 --dns $DNS_IP coreos/etcd     -peer-addr ${HOST_IP}:7000 -addr ${HOST_IP}:9000
 
 docker run -i --rm --volumes-from dnsmasq bewt85/configure_dns update frontend.service "$HOST_IP" backend.service "$HOST_IP" 
 docker run -i --rm --volumes-from dnsmasq bewt85/configure_dns update host1.internal   "$HOST_IP"
