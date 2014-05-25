@@ -6,19 +6,27 @@ working alongside one another before being moved into production.
 
 ## TODO
 
-- Setup a loadbalancer to forward requests to the right container
-- Setup the load balancer to set the x-mayfly header
-- Setup the load balancer to send traffic to the container based on 
-  the x-mayfly header
-- Load another version of the backend and show that both work
+- Create two versions of the frontend and backend 
+  - Create templates so that old and new versions look different
+- Load haproxy.cfg to serve different combinations of the apps
+- When a container starts up an ambasador should register it as a new backend
+  in HAProxy
+- Given an environement configuration file:
+  - Create frontend configuration for the environement
+  - Check that backend config is in place
+  - Start the required containers
+  - [ build the required containers ]
 
 ## TODO Later
-- Something to configure the load balancer
-- Something to launch the right containters
-- Something to retire old containers / environments
+
+- Multi-host / Digital Ocean
+  - Create simple ansible script to setup and secure host machine
+  - Tunnel HTTP over SSH (poor man's VPN)
+- Git hooks for new environment files
+- What about databases / things that can't have a x-mayfly header applied?
+- Retire old containers / environments
 
 # Tools to look at
 - confd + etcd / consul to create new config
 - fleet to deploy across a couple of machines
 - fig for deploying on one machine if fleet is overkill
-- incron to autoreload when config changes
