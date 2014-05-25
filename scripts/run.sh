@@ -11,4 +11,5 @@ docker run -d --name frontend -t -p 5000:8080 --dns $DNS_IP bewt85/frontend
 docker run -d --name haproxy  -t -p 80:80     --dns $DNS_IP bewt85/haproxy
 
 docker run -i --rm --volumes-from dnsmasq bewt85/configure_dns update frontend.service "$HOST_IP" backend.service "$HOST_IP" 
-# docker run -i --rm --volumes-from haproxy -t bewt85/configure_haproxy
+docker run -i --rm --volumes-from dnsmasq bewt85/configure_dns update host1.internal   "$HOST_IP"
+docker run -i --rm --volumes-from haproxy bewt85/configure_haproxy cp haproxy.cfg.bak /etc/haproxy/haproxy.cfg
