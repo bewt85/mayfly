@@ -9,7 +9,7 @@ app = Flask(__name__)
 def hello_world():
     mayfly_header = flask.request.headers.get('x-mayfly')
     request_headers = {'x-mayfly': mayfly_header} if mayfly_header else {}
-    r = requests.get('http://frontend.service:5001/', headers=request_headers)
+    r = requests.get('http://backend.service/', headers=request_headers)
     backend_message = r.json()['message']
     frontend_message = "Hello world from the frontend and %s" % backend_message 
     return frontend_message 
