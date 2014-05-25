@@ -5,8 +5,8 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-docker build -t bewt85/frontend:0.0.1    frontend/
-docker build -t bewt85/backend:0.0.1     backend/
+docker build -t bewt85/frontend:0.0.2    frontend/
+docker build -t bewt85/backend:0.0.2     backend/
 docker build -t bewt85/dnsmasq           dnsmasq/
 docker build -t bewt85/configure_dns     configure_dns/
 docker build -t bewt85/haproxy           haproxy/
