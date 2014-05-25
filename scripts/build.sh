@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ $EUID -ne 0 ]]; then
+  echo "Must be run as root" 
+  exit 1
+fi
+
 docker build -t bewt85/frontend          frontend/
 docker build -t bewt85/backend           backend/
 docker build -t bewt85/dnsmasq           dnsmasq/

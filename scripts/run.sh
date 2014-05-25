@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ $EUID -ne 0 ]]; then
+  echo "Must be run as root" 
+  exit 1
+fi
+
 HOST_IP=`ifconfig eth0 | awk '/inet addr/ {print $2}' | cut -d: -f2`
 
 docker run -d --name dnsmasq   -t                           bewt85/dnsmasq
