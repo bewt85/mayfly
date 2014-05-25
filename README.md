@@ -6,7 +6,6 @@ working alongside one another before being moved into production.
 
 ## TODO
 
-- Load haproxy.cfg to serve different combinations of the apps
 - When a container starts up an ambasador should register it as a new backend
   in HAProxy
 - Given an environement configuration file:
