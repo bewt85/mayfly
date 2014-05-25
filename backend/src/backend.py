@@ -4,12 +4,12 @@ from flask import Flask, jsonify
 import flask
 app = Flask(__name__)
 
-VERSION='0.0.1'
+VERSION='0.0.2'
 
 @app.route('/')
 def hello_world():
     mayfly_header = flask.request.headers.get('x-mayfly')
-    backend_message = "Hello world from the backend (v%s)" % VERSION
+    backend_message = "This request used version %s of the backend" % VERSION
     message={'message': backend_message} 
     return jsonify(**message)
 
