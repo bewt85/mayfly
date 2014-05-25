@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title>Mayfly Demo</title>
+  </head>
+  <body>
+    <h1>Mayfly Demo</h1>
+    <ul>
+      {% if mayfly_header %}
+      <li>x-mayfly header / environment: {{ mayfly_header }}</li>
+      {% endif %}
+      <li>Frontend message: {{ frontend_message }}</li>
+      <li>Backend message: {{ backend_message }}</li>
+    </ul>
+  </body>
+</html> 
