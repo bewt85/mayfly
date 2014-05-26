@@ -9,6 +9,9 @@ usage() {
   echo "$0 register   <service> <version> <host name or ip> <port> [ --peer <etcd peer> ] # Registers a service with etcd"
   echo "$0 deregister <service> <version> <host name or ip> <port> [ --peer <etcd peer> ] # Deregisters a service with etcd"
   echo "$0 list       <service> [ <version> ] [ --peer <etcd peer> ]                      # Lists 'host:port' for a service"
+  echo
+  echo "Called with:"
+  echo "$@"
 }
 
 etcd(){
@@ -76,7 +79,8 @@ if [[ 'list' == $COMMAND ]]; then
     ETCD_PEERS="--peers $5"
     list
   else
-    usage
+    echo "ERROR: Incorrect number of arguments for command 'list'"
+    usage $@
     exit 1
   fi
   exit 0
@@ -85,7 +89,8 @@ elif [[ $# == 5 ]]; then
 elif [[ $# == 7 ]]; then
   ETCD_PEERS="--peers $7"
 else
-  usage
+  echo "ERROR: Incorrect number of arguments ($#)"
+  usage $@
   exit 1
 fi
 
@@ -98,6 +103,7 @@ if [[ 'register' == $COMMAND ]]; then
 elif [[ 'deregister' == $COMMAND ]]; then
   deregister_service
 else
-  usage
+  echo "ERROR: Unrecognised command '$COMMAND'"
+  usage $@
   exit 1
 fi
