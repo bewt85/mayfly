@@ -10,5 +10,6 @@ RUN cd etcdctl-0.4.1 && ./build
 
 ENV PATH /etcdctl-0.4.1/bin:$PATH
 ADD run.sh /run.sh
+ADD link.sh /link.sh
 
-ENTRYPOINT ["/run.sh"]
+ENTRYPOINT ["/link.sh"]
