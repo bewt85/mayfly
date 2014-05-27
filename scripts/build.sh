@@ -11,4 +11,7 @@ docker build -t bewt85/dnsmasq           dnsmasq/
 docker build -t bewt85/configure_dns     configure_dns/
 docker build -t bewt85/haproxy           haproxy/
 docker build -t bewt85/configure_haproxy configure_haproxy/
+docker build -t bewt85/etcdctl:0.4.1     etcdctl/
 docker build -t bewt85/etcd_registrar    etcd_registrar/
+
+
