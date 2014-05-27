@@ -26,4 +26,4 @@ docker run -d -t bewt85/etcd_registrar register frontend.service 0.0.2 $HOST_IP 
 
 docker run -i --rm --volumes-from dnsmasq bewt85/configure_dns update frontend.service "$HOST_IP" backend.service "$HOST_IP" 
 docker run -i --rm --volumes-from dnsmasq bewt85/configure_dns update host1.internal   "$HOST_IP"
-docker run -i --rm --volumes-from haproxy bewt85/configure_haproxy configure_haproxy.py update
+docker run -i --rm --volumes-from haproxy -e "ETCD_PEERS=${HOST_IP}:9000" bewt85/configure_haproxy configure_haproxy.py update
