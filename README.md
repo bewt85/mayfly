@@ -6,9 +6,6 @@ working alongside one another before being moved into production.
 
 ## TODO
 
-- When a container starts up an ambasador should register it as a new backend
-  in HAProxy
-  - Update configure\_haproxy to use confd
 - Given an environement configuration file:
   - Create frontend configuration for the environement
   - Check that backend config is in place
@@ -23,8 +20,9 @@ working alongside one another before being moved into production.
 - Git hooks for new environment files
 - What about databases / things that can't have a x-mayfly header applied?
 - Retire old containers / environments
+- Tidy up / split into different repos
 
 # Tools to look at
-- confd + etcd / consul to create new config
+
 - fleet to deploy across a couple of machines
 - fig for deploying on one machine if fleet is overkill
