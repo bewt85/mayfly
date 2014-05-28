@@ -7,8 +7,11 @@ working alongside one another before being moved into production.
 ## TODO
 
 - Given an environement configuration file:
-  - Create frontend configuration for the environement
-  - Check that backend config is in place
+  - Turn an environment file into etcd key / values [DONE]
+  - Spot changes in a directory and turn config files into etcd key / values
+  - Given environment etcd config, update the haproxy config
+- Given some etcd config
+  - Check that the backends are inplace for the frontends 
   - Start the required containers
   - [ build the required containers ]
 
