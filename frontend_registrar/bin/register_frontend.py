@@ -22,7 +22,7 @@ def getEtcdClient():
 
 def getEtcdNode(key):
   client = getEtcdClient()
-  return Node(**client.read(key).__dict__())
+  return Node(**client.read(key).__dict__)
 
 class Node(object):
   def __init__(self, createdIndex, modifiedIndex, key, nodes=None, value=None, expiration=None, ttl=None, dir=False, **kwargs):
@@ -37,6 +37,7 @@ class Node(object):
     self.short_key = key.split('/')[-1]
   def ls(self):
     if self.dir and not self.nodes:
+      client = getEtcdClient()
       self.nodes = [Node(**n) for n in client.read(self.key, recursive=True)._children]
     return self.nodes
   def __repr__(self):
