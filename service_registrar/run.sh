@@ -51,9 +51,12 @@ register_service() {
 }
 
 deregister_service() {
+  set +e
   for key in $(etcd ls $SERVICE_DIR); do
+    # Allow this to fail for non-matching keys
     etcd rm $key --with-value "$SERVICE_LOCATION"
   done
+  set -e
 }
 
 COMMAND=$1

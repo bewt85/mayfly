@@ -5,35 +5,54 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
+announce() {
+  SERVICE=$1
+  VERSION=$2
+  PORT=$3
+  echo "Started ${SERVICE}.service_${VERSION} on port $PORT"
+}
+
 run() {
   SERVICE=$1
   VERSION=$2
-  echo "Starting ${SERVICE}.service_${VERSION}" >&2
-  CID=$(docker run -d --name ${SERVICE}_${VERSION} -t -p 8080 --dns $DNS_IP bewt85/${SERVICE}:${VERSION})
-  echo $CID
+  CID=$(docker run -d -t -p 8080 --dns $DNS_IP bewt85/${SERVICE}:${VERSION})
+  echo $SERVICE $VERSION $CID
 }
 
 register() {
   SERVICE=$1
   VERSION=$2
-  PORT=$(docker inspect ${SERVICE}_${VERSION} | ./scripts/extract_docker_port.py 8080)
-  echo "Registering ${SERVICE}.service_${VERSION} on port $PORT" >&2
-  docker run -d -t bewt85/etcd_registrar register ${SERVICE}.service $VERSION $HOST_IP $PORT --peer $HOST_IP:9000
+  CID=$3
+  PORT=$(docker inspect $CID | ./scripts/extract_docker_port.py 8080)
+  CID=$(docker run -d -t bewt85/service_registrar register ${SERVICE}.service $VERSION $HOST_IP $PORT --peer $HOST_IP:9000)
+  echo $SERVICE $VERSION $PORT
 }
 
-docker run -d --name dnsmasq -t bewt85/dnsmasq
+echo "Starting DNS"
+CID=$(docker run -d --name dnsmasq -t bewt85/dnsmasq)
 
 DNS_IP=`docker inspect dnsmasq | awk -F '"' '/IPAddress/ {print $4}'`
 HOST_IP=`ifconfig eth0 | awk '/inet addr/ {print $2}' | cut -d: -f2`
 
-docker run -i --rm --volumes-from dnsmasq bewt85/configure_dns update frontend.service "$HOST_IP" backend.service "$HOST_IP"
+echo "Registering services with DNS"
+CID=$(docker run -i --rm --volumes-from dnsmasq bewt85/configure_dns update frontend.service "$HOST_IP" backend.service "$HOST_IP")
 
-docker run -d --name haproxy       -p 80:80                  --dns $DNS_IP bewt85/haproxy
-docker run -d --name etcd-node1 -t -p 7000:7000 -p 9000:9000 --dns $DNS_IP coreos/etcd     -peer-addr ${HOST_IP}:7000 -addr ${HOST_IP}:9000
+echo "Starting HAProxy"
+CID=$(docker run -d --name haproxy       -p 80:80                  --dns $DNS_IP bewt85/haproxy)
+echo "Starting etcd"
+CID=$(docker run -d --name etcd-node1 -t -p 7000:7000 -p 9000:9000 --dns $DNS_IP coreos/etcd     -peer-addr ${HOST_IP}:7000 -addr ${HOST_IP}:9000)
 
-run       backend  0.0.1; register backend  0.0.1
-run       backend  0.0.2; register backend  0.0.2
-run       frontend 0.0.1; register frontend 0.0.1
-run       frontend 0.0.2; register frontend 0.0.2
+WAIT=30s
+echo "Giving etcd $WAIT to warm up"
+sleep $WAIT
 
-docker run -i --rm --volumes-from haproxy -e "ETCD_PEERS=${HOST_IP}:9000" bewt85/configure_haproxy configure_haproxy.py update
+announce $(register $(run backend  0.0.1))
+announce $(register $(run backend  0.0.1))
+announce $(register $(run backend  0.0.1))
+announce $(register $(run frontend 0.0.1))
+announce $(register $(run backend  0.0.2))
+announce $(register $(run backend  0.0.2))
+announce $(register $(run frontend 0.0.2))
+
+echo "Updating HAProxy config"
+CID=$(docker run -i --rm --volumes-from haproxy -e "ETCD_PEERS=${HOST_IP}:9000" bewt85/configure_haproxy configure_haproxy.py update)
