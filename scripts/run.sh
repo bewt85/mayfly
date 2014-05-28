@@ -55,4 +55,4 @@ announce $(register $(run backend  0.0.2))
 announce $(register $(run frontend 0.0.2))
 
 echo "Updating HAProxy config"
-CID=$(docker run -i --rm --volumes-from haproxy -e "ETCD_PEERS=${HOST_IP}:9000" bewt85/configure_haproxy configure_haproxy.py update)
+CID=$(sudo docker run -d --volumes-from haproxy --name haproxy_updater -e "ETCD_PEERS=${HOST_IP}:9000" bewt85/configure_haproxy etcdctl --peers ${HOST_IP}:9000 exec-watch --recursive /mayfly -- bash -c "configure_haproxy.py update")
