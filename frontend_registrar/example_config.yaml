@@ -1,0 +1,8 @@
+---
+name       : prod
+prefix     : www-prod
+services   :
+  - 
+      name   : frontend
+      version: 0.0.1
+  - backend
