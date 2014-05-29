@@ -1,3 +1,3 @@
 #!/bin/bash
 
-/usr/sbin/incrond
+/usr/sbin/incrond -n
