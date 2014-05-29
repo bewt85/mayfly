@@ -21,6 +21,7 @@ working alongside one another before being moved into production.
     - [ play nicely with existing haproxy config ]
   - backend\_registrar
     - should register just the service name, not service\_name.service
+- When / why are the registrars falling over?
 - Given some etcd config
   - Check that the backends are inplace for the frontends 
   - Start the required containers

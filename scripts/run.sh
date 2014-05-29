@@ -56,3 +56,7 @@ announce $(register $(run frontend 0.0.1))
 announce $(register $(run backend  0.0.2))
 announce $(register $(run backend  0.0.2))
 announce $(register $(run frontend 0.0.2))
+
+#docker run -d -t --name frontend_registrar -e 'ETCD_PEERS=10.0.2.15:9000' bewt85/frontend_registrar start_auto_update.sh
+#cat frontend_registrar/example_config.yaml
+#docker run -i -t --rm --volumes-from frontend_registrar ubuntu vi /etc/mayfly/environments/prod.yaml
