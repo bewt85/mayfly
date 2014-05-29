@@ -46,15 +46,6 @@ class Node(object):
     else:
       return "\n".join(node.__repr__() for node in self.ls())
 
-def getBackendsFromEtcd():
-  client = getEtcdClient()
-  backends = {}
-  for backend in (Node(**n) for n in client.read('/mayfly/backends', recursive=True)._children):
-    for version in backend.nodes:
-      for host in version.nodes:
-        backends.setdefault("%s_%s" % (backend.short_key, version.short_key), []).append(host.value) 
-  return backends
-
 import yaml
 
 class Environment(object):
