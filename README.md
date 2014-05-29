@@ -9,13 +9,11 @@ working alongside one another before being moved into production.
 - Given an environement configuration file:
   - Given environment etcd config, update the haproxy config
   - frontend\_registrar
-    - config should specify which service is exposed on www
     - [ delete environments when their config file is deleted ]
     - [ delete / archive config files if the environment changes ]
     - [ add a config file if a new environment appears in etcd? ]
   - configure\_haproxy should
     - deduplicate stuff in environment config
-    - pass one or more frontends to jinja with a port number
     - pass backends in with separate service\_name and versions (like frontends)
     - [ think about having request which are not on port 80 ]
     - [ play nicely with existing haproxy config ]
@@ -35,7 +33,7 @@ working alongside one another before being moved into production.
 - Git hooks for new environment files
 - What about databases / things that can't have a x-mayfly header applied?
 - Retire old containers / environments
-- Tidy up / split into different repos
+- Tidy up / document / split into different repos
 
 # Tools to look at
 
