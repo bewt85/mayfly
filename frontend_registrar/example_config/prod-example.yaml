@@ -6,4 +6,6 @@ services   :
       name   : frontend
       version: 0.0.1
       route  : /
-  - backend
+  - 
+      name   : backend 
+      version: 0.0.1
