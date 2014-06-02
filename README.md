@@ -13,8 +13,11 @@ working alongside one another before being moved into production.
     - [ delete / archive config files if the environment changes ]
     - [ add a config file if a new environment appears in etcd? ]
   - configure\_haproxy should
+    - skip an environment if it's config is incomplete / broken and move on
+      with good environments
     - deduplicate stuff in environment config
     - pass backends in with separate service\_name and versions (like frontends)
+    - route traffic to service other than containers
     - [ think about having request which are not on port 80 ]
     - [ play nicely with existing haproxy config ]
   - backend\_registrar
