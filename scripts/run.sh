@@ -47,7 +47,7 @@ echo "Giving etcd $WAIT to warm up"
 sleep $WAIT
 
 echo "Starting HAProxy config"
-CID=$(sudo docker run -d --volumes-from haproxy --name haproxy_updater -e "ETCD_PEERS=${HOST_IP}:9000" bewt85/configure_haproxy etcdctl --peers ${HOST_IP}:9000 exec-watch --recursive /mayfly -- bash -c "configure_haproxy.py update")
+CID=$(docker run -d --volumes-from haproxy --name haproxy_updater -e "ETCD_PEERS=${HOST_IP}:9000" bewt85/configure_haproxy etcdctl --peers ${HOST_IP}:9000 exec-watch --recursive /mayfly -- bash -c "configure_haproxy.py update")
 
 announce $(register $(run backend  0.0.1))
 announce $(register $(run backend  0.0.1))
@@ -56,3 +56,8 @@ announce $(register $(run frontend 0.0.1))
 announce $(register $(run backend  0.0.2))
 announce $(register $(run backend  0.0.2))
 announce $(register $(run frontend 0.0.2))
+
+echo "Starting HAProxy config updates"
+CID=$(docker run -d -t --name frontend_registrar -e 'ETCD_PEERS=10.0.2.15:9000' bewt85/frontend_registrar start_auto_update.sh)
+#cat frontend_registrar/example_config/prod-example.yaml
+#sudo docker run -i -t --rm --volumes-from frontend_registrar ubuntu vi /etc/mayfly/environments/prod.yaml

@@ -46,16 +46,19 @@ class Node(object):
     else:
       return "\n".join(node.__repr__() for node in self.ls())
 
-def getBackendsFromEtcd():
-  client = getEtcdClient()
-  backends = {}
-  for backend in (Node(**n) for n in client.read('/mayfly/backends', recursive=True)._children):
-    for version in backend.nodes:
-      for host in version.nodes:
-        backends.setdefault("%s_%s" % (backend.short_key, version.short_key), []).append(host.value) 
-  return backends
-
 import yaml
+
+def normaliseRoute(route):
+  if route == None:
+    return None
+  elif route == '/':
+    return '*'
+  else:
+    route, n = re.subn(r"^\/?(([^\/*]+\/)*)([^\/*]+)\/?$", r"\1\3/*", route)
+  if n == 1:
+    return route
+  else:
+    raise ValueError("Could not normalise route '%s'.  Make sure it is syntactically valid and doesn't contain '*'" % route)
 
 class Environment(object):
   def __init__(self, name, prefix=None, header=None, services=None):
@@ -72,6 +75,7 @@ class Service(object):
     details = { 'name': details } if isinstance(details, str) else details
     self.name = details.get('name')
     self.version = details.get('version', 'latest')
+    self.route = normaliseRoute(details.get('route', None))
   def __repr__(self):
     return self.__dict__.__repr__()
 
@@ -89,8 +93,8 @@ def updateEtcd(environments):
   for env in environments:
     # /mayfly/environments/<name>/prefix                       => www
     # /mayfly/environments/<name>/header                       => prod
+    # /mayfly/environments/<name>/routes/*                     => frontend/0.0.1
     # /mayfly/environments/<name>/services/<service>/<version> => 0
-
     try:
       client.delete('/mayfly/environments/%s' % env.name, recursive=True)
     except KeyError:
@@ -100,6 +104,10 @@ def updateEtcd(environments):
     client.write('/mayfly/environments/%s/header' % env.name, env.header)
     for service in env.services:
       client.write('/mayfly/environments/%s/services/%s/%s' % (env.name, service.name, service.version), 0)
+      if service.route == '/':
+        client.write('/mayfly/environments/%s/routes/*' % env.name, "%s/%s" % (service.name, service.version))
+      elif service.route:
+        client.write('/mayfly/environments/%s/routes/%s' % (env.name, service.route), "%s/%s" % (service.name, service.version)) 
 
 if __name__ == '__main__':
   environments = parseEnvironmentFile(args.file)

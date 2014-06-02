@@ -1,0 +1,10 @@
+---
+name       : dev 
+services   :
+  - 
+      name   : frontend
+      version: 0.0.1
+      route  : /
+  - 
+      name   : backend
+      version: 0.0.2
