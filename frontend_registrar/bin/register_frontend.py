@@ -2,6 +2,7 @@
 
 import argparse
 import os, re, cStringIO
+import datetime
 
 parser = argparse.ArgumentParser(description="Tool for updating haproxy.cfg")
 parser.add_argument('command', choices=['update'])
@@ -111,4 +112,5 @@ def updateEtcd(environments):
 
 if __name__ == '__main__':
   environments = parseEnvironmentFile(args.file)
+  print "[INFO %s] Updating etcd config because %s changed on disk" % (datetime.datetime.now(), args.file)
   updateEtcd(environments)
