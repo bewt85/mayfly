@@ -1,5 +1,4 @@
 #!/bin/bash
 
-/usr/sbin/incrond
-
-exec supervisord -n
+service haproxy start
+/usr/sbin/incrond -n
