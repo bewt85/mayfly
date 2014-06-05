@@ -4,6 +4,14 @@ Mayfly is a tool to setup virtual environments of microservices using docker.
 It is intended to simplify the testing of different versions of microservices
 working alongside one another before being moved into production.
 
+## Demo
+
+You can run an interactive demo by running:
+
+```
+sudo ./demo/01.sh
+```
+
 ## Examples
 
 To build the required containers locally, run:
