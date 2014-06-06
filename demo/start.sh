@@ -57,4 +57,4 @@ echo 'sudo docker run --rm -i -t --volumes-from haproxy ubuntu watch cat /etc/ha
 echo
 echo '<Press Enter>'
 read -s
-sudo ./demo/02.sh
+sudo ./demo/createBackends.sh 

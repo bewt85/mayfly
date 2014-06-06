@@ -9,7 +9,7 @@ working alongside one another before being moved into production.
 You can run an interactive demo by running:
 
 ```
-sudo ./demo/01.sh
+sudo ./demo/start.sh
 ```
 
 ## Examples

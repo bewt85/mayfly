@@ -31,24 +31,22 @@ register() {
 DNS_IP=`docker inspect dnsmasq | awk -F '"' '/IPAddress/ {print $4}'`
 HOST_IP=`ifconfig eth0 | awk '/inet addr/ {print $2}' | cut -d: -f2`
 
-echo "Add some more versions of the apps:"
+CID=$(docker run -d -t --name frontend_registrar -e 'ETCD_PEERS=10.0.2.15:9000' bewt85/frontend_registrar start_auto_update.sh)
+CID=$(cat frontend_registrar/example_config/prod-example.yaml | sudo docker run --rm -i -t --volumes-from frontend_registrar -a stdin ubuntu tee /etc/mayfly/environments/prod.yaml)
 
-announce $(register $(run backend  0.0.2))
-announce $(register $(run backend  0.0.2))
-announce $(register $(run frontend 0.0.2))
+announce $(register $(run backend  0.0.1))
+announce $(register $(run frontend 0.0.1))
 
 echo
-echo "Now create a dev environment, copy this:"
+echo 'This has setup some backends.  <Press Enter>'
+read -s
 echo
-cat frontend_registrar/example_config/dev-example.yaml
-echo
-echo "Into here"
-echo 'sudo docker run -i -t --rm --volumes-from frontend_registrar ubuntu vi /etc/mayfly/environments/dev.yaml'
-echo
-echo 'Also create a qa environment'
-echo 'sudo docker run -i -t --rm --volumes-from frontend_registrar ubuntu vi /etc/mayfly/environments/qa.yaml'
-echo
-echo "<Press Enter>"
+
+announce $(register $(run backend  0.0.1))
+announce $(register $(run backend  0.0.1))
+announce $(register $(run frontend 0.0.1))
+
+echo 'And it can set up a few of each. <Press Enter>'
 read -s
 
-sudo ./demo/04.sh
+sudo ./demo/createEnvironments.sh
