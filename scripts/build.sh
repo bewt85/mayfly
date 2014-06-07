@@ -5,8 +5,12 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-docker build -t bewt85/frontend:0.0.2    frontend/
-docker build -t bewt85/backend:0.0.2     backend/
+SCRIPT_DIR="$( cd "$( dirname $0 )" && pwd )"
+
+cd ${SCRIPT_DIR}/..
+demo-services/example-frontend/build.sh
+demo-services/example-backend/build.sh
+
 docker build -t bewt85/dnsmasq           dnsmasq/
 docker build -t bewt85/configure_dns     configure_dns/
 docker build -t bewt85/haproxy           haproxy/
