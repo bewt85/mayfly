@@ -11,11 +11,11 @@ cd ${SCRIPT_DIR}/..
 demo-services/example-frontend/build.sh
 demo-services/example-backend/build.sh
 
-docker build -t bewt85/dnsmasq           dnsmasq/
-docker build -t bewt85/configure_dns     configure_dns/
-docker build -t bewt85/haproxy           haproxy/
-docker build -t bewt85/configure_haproxy configure_haproxy/
-docker build -t bewt85/etcdctl:0.4.1     etcdctl/
-docker build -t bewt85/service_registrar service_registrar/
+docker-etcdctl/build.sh
+docker-dnsmasq/build.sh
+docker-haproxy/build.sh
 
-
+mayfly-dnmasq-updater/build.sh
+mayfly-haproxy-updater/build.sh
+mayfly-container-registrar/build.sh
+mayfly-environment-registrar/build.sh

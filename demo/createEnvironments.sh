@@ -5,6 +5,10 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
+if [[ ! -z $DOCKER_ACCOUNT_NAME ]]; then
+  DOCKER_ACCOUNT_NAME="bewt85"
+fi
+
 announce() {
   SERVICE=$1
   VERSION=$2
@@ -15,7 +19,7 @@ announce() {
 run() {
   SERVICE=$1
   VERSION=$2
-  CID=$(docker run -d -t -p 8080 --dns $DNS_IP bewt85/${SERVICE}:${VERSION})
+  CID=$(docker run -d -t -p 8080 --dns $DNS_IP ${DOCKER_ACCOUNT_NAME}/${SERVICE}:${VERSION})
   echo $SERVICE $VERSION $CID
 }
 
@@ -24,7 +28,7 @@ register() {
   VERSION=$2
   CID=$3
   PORT=$(docker inspect $CID | ./scripts/extract_docker_port.py 8080)
-  CID=$(docker run -d -t bewt85/service_registrar register ${SERVICE}.service $VERSION $HOST_IP $PORT --peer $HOST_IP:9000)
+  CID=$(docker run -d -t ${DOCKER_ACCOUNT_NAME}/container_registrar register ${SERVICE}.service $VERSION $HOST_IP $PORT --peer $HOST_IP:9000)
   echo $SERVICE $VERSION $PORT
 }
 
@@ -40,7 +44,7 @@ announce $(register $(run frontend 0.0.2))
 echo
 echo "Now create a dev environment, copy this:"
 echo
-cat frontend_registrar/example_config/dev-example.yaml
+cat mayfly-environment-registrar/example_config/dev-example.yaml
 echo
 echo "Into here"
 echo 'sudo docker run -i -t --rm --volumes-from frontend_registrar ubuntu vi /etc/mayfly/environments/dev.yaml'
