@@ -59,7 +59,7 @@ echo "Starting HAProxy config"
 CID=$(docker run -d --volumes-from haproxy --name haproxy_updater -e "ETCD_PEERS=${HOST_IP}:9000" ${DOCKER_ACCOUNT_NAME}/haproxy_updater etcdctl --peers ${HOST_IP}:9000 exec-watch --recursive /mayfly -- bash -c "configure_haproxy.py update")
 
 echo 'In a separate window run:'
-echo 'sudo docker run --rm -i -t --volumes-from haproxy ubuntu watch cat /etc/haproxy/haproxy.cfg'
+echo 'sudo docker run --rm -i -t --volumes-from haproxy ubuntu watch sed '/^[[:space:]]\\*$/d' /etc/haproxy/haproxy.cfg'
 echo
 echo '<Press Enter>'
 read -s
