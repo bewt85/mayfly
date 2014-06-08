@@ -1,63 +1,55 @@
 # Mayfly
 
-Mayfly is a tool to setup virtual environments of microservices using docker.
-It is intended to simplify the testing of different versions of microservices
-working alongside one another before being moved into production.
+Many projects use a number of separate environments as part of their deployment 
+pipeline.  These might include a dev environment in which the latest version of the
+software is automatically deployed; a qa environment for testing a specific 
+configuration of components; a staging environment which is only "one change away from
+production" (i.e. holding what you next plan on deploying); and a production 
+environment.
+
+Sometimes however, developers might want to change a couple of components at once and
+test them without having to lock up the qa environment from being used by everyone else
+or user researchers might want to test a specific configuration.
+
+Mayfly is designed to setup short lived virtual environments to meet these needs.  By 
+pushing a yaml config file to a repo you can quickly setup versions of services which, 
+for example, are accessible from "www-temp-1.example.com" without disrupting other users 
+of the qa environment.
+
+Mayfly is a project I knocked together while taking a break which demonstrates this 
+concept.  I wouldn't use it in a production environment or indeed a development 
+environment before making a few more changes.  Realistically I'm unlikely to do this
+unless we actually deploy something like this at work.  Forking  is very welcome though
+if you think this is a good concept.
 
 ## Demo
 
-You can run an interactive demo by running:
+Get the submodules:
 
 ```
-sudo ./demo/start.sh
+git submodule init
+git submodule update
 ```
 
-## Examples
-
-To build the required containers locally, run:
+You can create your own versions of the required containers by setting the following 
+environment variable to your docker index username (if you don't it uses mine) and 
+running this bash script:
 
 ```
+export DOCKER_ACCOUNT_NAME=<your_name>
 sudo ./scripts/build.sh
 ```
 
-TODO: Create a simple way to build a few versions of the apps
-
-To start the containers, run:
+Add a few DNS entries to your `/etc/hosts`:
 
 ```
-sudo ./scripts/run.sh
+sudo sh -c 'echo "127.0.0.1 www.example.com www-dev.example.com www-qa.example.com" >> /etc/hosts'
 ```
 
-TODO: Something about DNS
-
-Visit www.example.com - you should get a 503
-
-To get an example config file:
+You can then run the interactive demo:
 
 ```
-cat frontend_registrar/example_config/prod-example.yaml
-```
-
-Update HAProxy by copying this file into:
-
-```
-sudo docker run -i -t --rm --volumes-from frontend_registrar ubuntu vi /etc/mayfly/environments/prod.yaml
-```
-
-Visit www.example.com - you should simple page
-
-Change the version of the frontend and / or backend from 0.0.1 to 0.0.2:
-
-```
-sudo docker run -i -t --rm --volumes-from frontend_registrar ubuntu vi /etc/mayfly/environments/prod.yaml
-```
-
-Visit www.example.com - the page should have changed
-
-To kill all the running containers on the host, run:
-
-```
-sudo ./scripts/kill --rm
+sudo -E ./demo/start.sh
 ```
 
 ## Components
