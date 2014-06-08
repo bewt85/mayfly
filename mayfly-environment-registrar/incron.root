@@ -1,1 +1,0 @@
-/etc/mayfly/environments/ IN_MODIFY /usr/local/bin/update_incrond_helper.sh $@$#

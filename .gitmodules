@@ -1,0 +1,27 @@
+[submodule "docker-dnsmasq"]
+	path = docker-dnsmasq
+	url = git@github.com:bewt85/docker-dnsmasq.git
+[submodule "docker-etcdctl"]
+	path = docker-etcdctl
+	url = git@github.com:bewt85/docker-etcdctl.git
+[submodule "docker-haproxy"]
+	path = docker-haproxy
+	url = git@github.com:bewt85/docker-haproxy.git
+[submodule "mayfly-container-registrar"]
+	path = mayfly-container-registrar
+	url = git@github.com:bewt85/mayfly-container-registrar.git
+[submodule "mayfly-environment-registrar"]
+	path = mayfly-environment-registrar
+	url = git@github.com:bewt85/mayfly-environment-registrar.git
+[submodule "mayfly-dnsmasq-updater"]
+	path = mayfly-dnsmasq-updater
+	url = git@github.com:bewt85/mayfly-dnsmasq-updater.git
+[submodule "mayfly-haproxy-updater"]
+	path = mayfly-haproxy-updater
+	url = git@github.com:bewt85/mayfly-haproxy-updater.git
+[submodule "demo-services/example-frontend"]
+	path = demo-services/example-frontend
+	url = git@github.com:bewt85/example-frontend.git
+[submodule "demo-services/example-backend"]
+	path = demo-services/example-backend
+	url = git@github.com:bewt85/example-backend.git
