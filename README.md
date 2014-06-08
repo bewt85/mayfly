@@ -37,7 +37,7 @@ running this bash script:
 
 ```
 export DOCKER_ACCOUNT_NAME=<your_name>
-sudo ./scripts/build.sh
+sudo -E ./scripts/build.sh
 ```
 
 Add a few DNS entries to your `/etc/hosts`:
