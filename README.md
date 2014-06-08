@@ -102,6 +102,12 @@ Provides DNS to containers as required.  Like `haproxy` it watches a file
 This container runs a script this updates the file used by `dnsmasq`.  It should
 therefore be run with `/etc/dnsmasq/` mounted from `dnsmasq`.
 
+### [etcdctl](https://github.com/bewt85/docker-etcdctl)
+
+This container is used as the base of other containers which need to use etcd. 
+It has etcd pre-installed and a script which makes it easier to pull common 
+request parameteres from environment variables.
+
 ## TODO
 
 - Given an environement configuration file:
