@@ -24,6 +24,11 @@ if you think this is a good concept.
 
 ## Demo
 
+Requires [docker](https://www.docker.io/), [siege](http://www.joedog.org/siege-home/), 
+root access and git.  Everything else is in a container.  If you don't have siege, you won't 
+be able to see the last bit (spoiler: on my laptop I get 35 requests to the frontend per second; 
+it sometimes drops one request when haproxy reloads).
+
 Get the submodules:
 
 ```
