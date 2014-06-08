@@ -1,6 +1,0 @@
---extra-index-url http://pyyaml.org/download/pyyaml/
--e git+https://github.com/jplana/python-etcd.git@0.3.0#egg=python-etcd
-
-PyYAML==3.11
-argparse==1.2.1
-wsgiref==0.1.2
