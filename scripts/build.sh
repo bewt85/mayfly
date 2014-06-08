@@ -15,7 +15,7 @@ docker-etcdctl/build.sh
 docker-dnsmasq/build.sh
 docker-haproxy/build.sh
 
-mayfly-dnmasq-updater/build.sh
+mayfly-dnsmasq-updater/build.sh
 mayfly-haproxy-updater/build.sh
 mayfly-container-registrar/build.sh
 mayfly-environment-registrar/build.sh

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [[ $EUID -ne 0 ]]; then
   echo "Must be run as root" 
   exit 1
@@ -8,7 +10,7 @@ fi
 echo "Cleaning up before starting the demo:"
 sudo ./scripts/kill.sh --rm
 
-if [[ ! -z $DOCKER_ACCOUNT_NAME ]]; then
+if [[ -z $DOCKER_ACCOUNT_NAME ]]; then
   DOCKER_ACCOUNT_NAME="bewt85"
 fi
 
@@ -42,7 +44,7 @@ DNS_IP=`docker inspect dnsmasq | awk -F '"' '/IPAddress/ {print $4}'`
 HOST_IP=`ifconfig eth0 | awk '/inet addr/ {print $2}' | cut -d: -f2`
 
 echo "Registering services with DNS"
-CID=$(docker run -i --rm --volumes-from dnsmasq ${DOCKER_ACCOUNT_NAME}/dns_updater update frontend.service "$HOST_IP" backend.service "$HOST_IP")
+CID=$(docker run -i --rm --volumes-from dnsmasq ${DOCKER_ACCOUNT_NAME}/dnsmasq_updater update frontend.service "$HOST_IP" backend.service "$HOST_IP")
 
 echo "Starting HAProxy"
 CID=$(docker run -d --name haproxy       -p 80:80                  --dns $DNS_IP ${DOCKER_ACCOUNT_NAME}/haproxy)
@@ -61,4 +63,4 @@ echo 'sudo docker run --rm -i -t --volumes-from haproxy ubuntu watch cat /etc/ha
 echo
 echo '<Press Enter>'
 read -s
-sudo ./demo/createBackends.sh 
+./demo/createBackends.sh 

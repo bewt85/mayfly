@@ -5,7 +5,7 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-if [[ ! -z $DOCKER_ACCOUNT_NAME ]]; then
+if [[ -z $DOCKER_ACCOUNT_NAME ]]; then
   DOCKER_ACCOUNT_NAME="bewt85"
 fi
 
@@ -47,12 +47,12 @@ echo
 cat mayfly-environment-registrar/example_config/dev-example.yaml
 echo
 echo "Into here"
-echo 'sudo docker run -i -t --rm --volumes-from frontend_registrar ubuntu vi /etc/mayfly/environments/dev.yaml'
+echo 'sudo docker run -i -t --rm --volumes-from environment_registrar ubuntu vi /etc/mayfly/environments/dev.yaml'
 echo
 echo 'Also create a qa environment'
-echo 'sudo docker run -i -t --rm --volumes-from frontend_registrar ubuntu vi /etc/mayfly/environments/qa.yaml'
+echo 'sudo docker run -i -t --rm --volumes-from environment_registrar ubuntu vi /etc/mayfly/environments/qa.yaml'
 echo
 echo "<Press Enter>"
 read -s
 
-sudo ./demo/performanceTest.sh
+./demo/performanceTest.sh

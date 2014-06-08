@@ -1,11 +1,13 @@
 #!/bin/bash
 
+set -e
+
 if [[ $EUID -ne 0 ]]; then
   echo "Must be run as root" 
   exit 1
 fi
 
-if [[ ! -z $DOCKER_ACCOUNT_NAME ]]; then
+if [[ -z $DOCKER_ACCOUNT_NAME ]]; then
   DOCKER_ACCOUNT_NAME="bewt85"
 fi
 
@@ -46,12 +48,14 @@ CID=$(docker run -d --name haproxy       -p 80:80                  --dns $DNS_IP
 echo "Starting etcd"
 CID=$(docker run -d --name etcd-node1 -t -p 7000:7000 -p 9000:9000 --dns $DNS_IP coreos/etcd     -peer-addr ${HOST_IP}:7000 -addr ${HOST_IP}:9000)
 
-WAIT=30s
+WAIT=60s
 echo "Giving etcd $WAIT to warm up"
 sleep $WAIT
 
 echo "Starting HAProxy config"
 CID=$(docker run -d --volumes-from haproxy --name haproxy_updater -e "ETCD_PEERS=${HOST_IP}:9000" ${DOCKER_ACCOUNT_NAME}/haproxy_updater etcdctl --peers ${HOST_IP}:9000 exec-watch --recursive /mayfly -- bash -c "configure_haproxy.py update")
+echo "Starting HAProxy config updates"
+CID=$(docker run -d -t --name environment_registrar -e 'ETCD_PEERS=10.0.2.15:9000' ${DOCKER_ACCOUNT_NAME}/environment_registrar start_auto_update.sh)
 
 announce $(register $(run backend  0.0.1))
 announce $(register $(run backend  0.0.1))
@@ -61,6 +65,5 @@ announce $(register $(run backend  0.0.2))
 announce $(register $(run backend  0.0.2))
 announce $(register $(run frontend 0.0.2))
 
-echo "Starting HAProxy config updates"
-CID=$(docker run -d -t --name environment_registrar -e 'ETCD_PEERS=10.0.2.15:9000' ${DOCKER_ACCOUNT_NAME}/environment_registrar start_auto_update.sh)
+echo "Add initial HAProxy config"
 CID=$(cat mayfly-environment-registrar/example_config/prod-example.yaml | sudo docker run --rm -i -t --volumes-from environment_registrar -a stdin ubuntu tee /etc/mayfly/environments/prod.yaml)
