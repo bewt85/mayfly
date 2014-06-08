@@ -54,12 +54,11 @@ sudo -E ./demo/start.sh
 
 ## Components
 
-### hproxy
-
+### [hproxy](https://github.com/bewt85/docker-haproxy)
 Runs HAProxy.  HAProxy is reloaded whenever the config file 
 `/etc/haproxy/haproxy.cfg` changes on disk.
 
-### configure\_haproxy
+### [haproxy_updater](https://github.com/bewt85/mayfly-haproxy-updater)
 
 Watches etcd for changes to keys starting `/mayfly` and updates 
 `/etc/haproxy/haproxy.cfg`.  The config makes use of the `x-mayfly` header to 
@@ -70,37 +69,38 @@ containers should forward this on with any internal requests.
 This container should be run with `/etc/haproxy/` mounted from an haproxy 
 container.
 
-### frontend\_registrar
+### [environment_registrar](https://github.com/bewt85/mayfly-environment-registrar)
 
 Watches the `/etc/mayfly/environments/` directory for changes.  If a `*.yaml` 
-file is added, it parses the file and updates etcd so that `configure\_haproxy
+file is added, it parses the file and updates etcd so that `haproxy_updater`
 can make required updates.
 
-### service\_registrar
+### [container_registrar](https://github.com/bewt85/mayfly-container-registrar)
 
 Runs a script which takes the name and version of a service container as 
-arguments.  These are used to advertise the service to configure\_haproxy 
+arguments.  These are used to advertise the service to `haproxy_updater` 
 including the host and port to access the service.
 
 The etcd keys set by this container have a short ttl; if this container stops
-configure\_haproxy will believe that the backend service is no longer 
+`haproxy_updater` will believe that the backend service is no longer 
 available.  This can be used with a service like `fleet` by binding this 
 container to a running service container.
 
-### service containers
+### demo containers
 
-I've created two simple services 'frontend' and 'backend' using flask.  I built
-them in 0.0.1 and 0.0.2 versions.
+I've created two simple services [frontend](https://github.com/bewt85/example-frontend) 
+and [backend](https://github.com/bewt85/example-backend) using flask.  I built them 
+in 0.0.1 and 0.0.2 versions.
 
-### dnsmasq
+### [dnsmasq](https://github.com/bewt85/docker-dnsmasq)
 
-Provides DNS to containers as required.  Like haproxy it watches a file 
+Provides DNS to containers as required.  Like `haproxy` it watches a file 
 `/etc/dnsmasq/hosts` for changes and reloads if any are found.
 
-### configure\_dns
+### [dns_updater](https://github.com/bewt85/mayfly-dnsmasq-updater)
 
-This container runs a script this updates the file used by dnsmasq.  It should
-therefore be run with `/etc/dnsmasq/` mounted from dnsmasq
+This container runs a script this updates the file used by `dnsmasq`.  It should
+therefore be run with `/etc/dnsmasq/` mounted from `dnsmasq`.
 
 ## TODO
 
