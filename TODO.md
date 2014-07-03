@@ -1,8 +1,6 @@
 ## TODO
 
 - Replace individual mayfly-container-registrars with something that talks to docker
-- The new registrar should register the service name and version, not 
-  `service_name.service`
   - Make corresponding update to haproxy
 - Replace containers with slugs
   - Turn services into flynn style slugs
