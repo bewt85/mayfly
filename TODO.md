@@ -2,6 +2,7 @@
 
 - Replace individual mayfly-container-registrars with something that talks to docker
   - Make corresponding update to haproxy
+    - Some changes made but bugs introduced
 - Replace containers with slugs
   - Turn services into flynn style slugs
   - Create a WebDav container
