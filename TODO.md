@@ -1,16 +1,18 @@
 ## TODO
 
-- Replace individual mayfly-container-registrars with something that talks to docker
-  - Make corresponding update to haproxy
-    - Some changes made but bugs introduced
+- Check demo still works
+- Use DNS rather than headers to route requests
+- Start containers as specified in the environment config
+  - specify better environment config
+  - update the etcd representaion of the config
+  - create / update a container to start other containers
+- Do some actual health checking on backends and create a host canary container
 - Replace containers with slugs
   - Turn services into flynn style slugs
   - Create a WebDav container
   - Put some slugs in it
 - Add basic runtime config to containers, manage this at deploy time / as part
   of the environment
-- Use DNS rather than headers to route requests
-- Do some actual health checking on backends and create a host canary container
 - Create a GUI to control environments
   - list environments
   - create environments
